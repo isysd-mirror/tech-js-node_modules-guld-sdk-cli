@@ -2,8 +2,15 @@
 const program = require('commander')
 const { getRandStr, getRandInt } = require('guld-random')
 const VERSION = require('./package.json').version
+const { spawn } = require('child_process')
 
 /* eslint-disable no-console */
+async function maybeRun (cmd, args = [], chance = 50) {
+  var rint = await getRandInt(99) + 1
+  if (rint < chance) return spawn(cmd, args, { stdio: 'inherit' })
+  else console.log('Not run.')
+}
+
 program
   .name('guld-random')
   .version(VERSION)
@@ -22,6 +29,13 @@ program
   .action(async (maxm, options) => {
     if (maxm !== undefined) maxm = Number(maxm)
     getRandInt(maxm).then(console.log)
+  })
+program
+  .command('run <cmd> [args...]')
+  .description('Randomly choose whether to run command with args.')
+  .option('-c --chance <percent>', 'The percent chance of running the command.', 50)
+  .action(async (cmd, args, options) => {
+    maybeRun(cmd, args, options.percent)
   })
 /* eslint-enable no-console */
 

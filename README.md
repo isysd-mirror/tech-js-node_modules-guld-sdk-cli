@@ -21,11 +21,12 @@ npm i -g guld-random-cli
 
   Options:
 
-    -V, --version        output the version number
-    -h, --help           output usage information
+    -V, --version                  output the version number
+    -h, --help                     output usage information
 
   Commands:
 
-    string|str [length]  Generate a random string of the given length (default 256).
-    number|num [max]     Generate a random integer between 0 and max. (default 65536)
+    string|str [length]            Generate a random string of the given length (default 256).
+    number|num [max]               Generate a random integer between 0 and max. (default 255)
+    run [options] <cmd> [args...]  Randomly choose whether to run command with args.
 ```
