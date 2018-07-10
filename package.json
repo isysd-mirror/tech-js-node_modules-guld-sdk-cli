@@ -1,6 +1,6 @@
 {
   "name": "guld-random-cli",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Cryptographically secure random number generator using `/dev/urandom` with fallback to node's `crypto` and finally to `window.crypto || window.mscrypto`.",
   "bin": {
     "guld-random": "./cli.js"
