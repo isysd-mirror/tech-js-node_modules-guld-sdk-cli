@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^2.16.0",
-    "guld-random": "file:../guld-random"
+    "guld-random": "^0.3.0"
   },
   "devDependencies": {
     "eslint": "^5.1.0",
