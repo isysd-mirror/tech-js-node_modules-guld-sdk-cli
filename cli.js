@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const program = require('commander')
-const path = require('path')
 const { getRandStr, getRandInt } = require('guld-random')
 const VERSION = require('./package.json').version
 
@@ -19,7 +18,7 @@ program
 program
   .command('number [max]')
   .alias('num')
-  .description('Generate a random integer between 0 and max. (default 65536)')
+  .description('Generate a random integer between 0 and max. (default 255)')
   .action(async (maxm, options) => {
     if (maxm !== undefined) maxm = Number(maxm)
     getRandInt(maxm).then(console.log)
