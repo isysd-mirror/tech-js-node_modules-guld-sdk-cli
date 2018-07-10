@@ -13,14 +13,14 @@ program
   .alias('str')
   .description('Generate a random string of the given length (default 256).')
   .action((length, options) => {
-    getRandStr(length).then(console.log)
+    getRandStr(Number(length)).then(console.log)
   })
 program
   .command('number [max]')
   .alias('num')
   .description('Generate a random integer between 0 and max. (default 65536)')
   .action(async (maxm, options) => {
-    getRandInt(maxm).then(console.log)
+    getRandInt(Number(maxm)).then(console.log)
   })
 /* eslint-enable no-console */
 
