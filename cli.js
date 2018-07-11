@@ -8,7 +8,6 @@ const { spawn } = require('child_process')
 async function maybeRun (cmd, args = [], chance = 50) {
   var rint = await getRandInt(99) + 1
   if (rint < chance) return spawn(cmd, args, { stdio: 'inherit' })
-  else console.log('Not run.')
 }
 
 program
@@ -35,7 +34,7 @@ program
   .description('Randomly choose whether to run command with args.')
   .option('-c --chance <percent>', 'The percent chance of running the command.', 50)
   .action(async (cmd, args, options) => {
-    maybeRun(cmd, args, options.percent)
+    maybeRun(cmd, args, options.chance)
   })
 /* eslint-enable no-console */
 
