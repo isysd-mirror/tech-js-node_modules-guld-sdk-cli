@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const program = require('commander')
 const VERSION = require('./package.json').version
-const { spawn } = require('child_process')
+// const { spawn } = require('child_process')
 const { getFS } = require('guld-fs')
 const { getName, getAlias } = require('guld-user')
 const { pathEscape } = require('guld-git-path')
@@ -12,7 +12,7 @@ var user
 program
   .name('guld-sdk')
   .version(VERSION)
-  .description("Software developer kit for guld apps.")
+  .description('Software developer kit for guld apps.')
   .command('package [location]')
   .alias('pkg')
   .description('Initialize or patch a nodejs package.json file.')
@@ -32,16 +32,17 @@ program
     pkg.homepage = pkg.homepage || `https://github.com/${ghname}/${slug}#readme`
     pkg.keywords = pkg.keywords || ['guld']
     if (pkg.keywords.indexOf('guld') === -1) pkg.keywords.push('guld')
-    if (pkg.keywords)
-    if (dname.match(/.*-cli$/)) {
-      pkg.preferGlobal = true
-      delete pkg.main
-      delete pkg.browser
-      if (pkg.keywords.indexOf('cli') === -1) pkg.keywords.push('cli')
-      var stats = fs.stat('./cli.js').then(stats => {
-        pkg.bin = {}
-        pkg.bin[dname.replace('-cli', '')] = './cli.js'
-      }).catch()
+    if (pkg.keywords) {
+      if (dname.match(/.*-cli$/)) {
+        pkg.preferGlobal = true
+        delete pkg.main
+        delete pkg.browser
+        if (pkg.keywords.indexOf('cli') === -1) pkg.keywords.push('cli')
+        fs.stat('./cli.js').then(stats => {
+          pkg.bin = {}
+          pkg.bin[dname.replace('-cli', '')] = './cli.js'
+        }).catch()
+      }
     }
     pkg.repository = pkg.repository || remote
     await fs.writeFile('package.json', JSON.stringify(pkg, null, 2))
