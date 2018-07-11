@@ -18,9 +18,9 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^2.16.0",
-    "guld-fs": "^1.2.7",
-    "guld-git-path": "^1.0.6",
-    "guld-user": "^0.5.4"
+    "guld-fs": "^1.2.8",
+    "guld-git-path": "^1.0.7",
+    "guld-user": "^0.5.5"
   },
   "devDependencies": {
     "eslint": "^5.1.0",
