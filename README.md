@@ -1,13 +1,13 @@
-# guld-random-cli
+# guld-sdk-cli
 
-Cryptographically secure random number generator using `/dev/urandom` with fallback to node's `crypto` and finally to `window.crypto || window.mscrypto`.
+Software developer kit for guld apps.
 
 ### Example Output
 
 ### Install
 
 ```
-npm i -g guld-random-cli
+npm i -g guld-sdk-cli
 ```
 
 ### Usage
@@ -15,18 +15,16 @@ npm i -g guld-random-cli
 ##### CLI
 
 ```
-  Usage: guld-random [options] [command]
+  Usage: guld-sdk [options] [command]
 
-  Cryptographically secure random number generator using `/dev/urandom` with fallback to node's `crypto` and finally to `window.crypto || window.mscrypto`.
+  Software developer kit for guld apps.
 
   Options:
 
-    -V, --version                  output the version number
-    -h, --help                     output usage information
+    -V, --version           output the version number
+    -h, --help              output usage information
 
   Commands:
 
-    string|str [length]            Generate a random string of the given length (default 256).
-    number|num [max]               Generate a random integer between 0 and max. (default 255)
-    run [options] <cmd> [args...]  Randomly choose whether to run command with args.
+    package|pkg [location]  Initialize or patch a nodejs package.json file.
 ```

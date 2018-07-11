@@ -1,9 +1,9 @@
 {
-  "name": "guld-random-cli",
-  "version": "0.3.3",
-  "description": "Cryptographically secure random number generator using `/dev/urandom` with fallback to node's `crypto` and finally to `window.crypto || window.mscrypto`.",
+  "name": "guld-sdk-cli",
+  "version": "0.1.0",
+  "description": "Software developer kit for guld apps.",
   "bin": {
-    "guld-random": "./cli.js"
+    "guld-sdk": "./cli.js"
   },
   "scripts": {
     "lint": "eslint --env browser *.js*",
@@ -11,17 +11,16 @@
   },
   "keywords": [
     "guld",
-    "git",
-    "security",
-    "password",
     "cli",
-    "encryption"
+    "sdk"
   ],
   "author": "isysd",
   "license": "MIT",
   "dependencies": {
     "commander": "^2.16.0",
-    "guld-random": "^0.3.1"
+    "guld-fs": "^1.2.5",
+    "guld-git-path": "^1.0.4",
+    "guld-user": "^0.5.3"
   },
   "devDependencies": {
     "eslint": "^5.1.0",
@@ -41,5 +40,8 @@
   "readme": "README.md",
   "engines": {
     "node": ">=7"
-  }
+  },
+  "homepage": "https://github.com/isysd/tech-js-node_modules-guld-sdk-cli#readme",
+  "preferGlobal": true,
+  "repository": "git@github.com:isysd/tech-js-node_modules-guld-sdk-cli.git"
 }
