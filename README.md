@@ -28,6 +28,7 @@ guld-sdk --help
   Options:
 
     -V, --version          output the version number
+    -u --user <name>       The user name to run as.
     -h, --help             output usage information
 
   Commands:
