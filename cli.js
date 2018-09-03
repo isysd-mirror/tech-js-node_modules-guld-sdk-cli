@@ -11,6 +11,10 @@ program
   .name(thispkg.name.replace('-cli', ''))
   .version(thispkg.version)
   .description(thispkg.description)
+  .option('-u --user <name>', 'The user name to run as.', (n) => {
+    if (n) process.env.GULDNAME = global.GULDNAME = n
+    return true
+  })
   .command('init [package-name]')
   .description('Create or update a JS package, including package.json, travis, webpack, and more config files.')
   .action(async (pname, options) => {
