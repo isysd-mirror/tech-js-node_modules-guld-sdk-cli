@@ -1,88 +1,52 @@
 #!/usr/bin/env node
 const program = require('commander')
-const VERSION = require('./package.json').version
-// const { spawn } = require('child_process')
+const thispkg = require(`${__dirname}/package.json`)
 const { getFS } = require('guld-fs')
-const { getName, getAlias } = require('guld-user')
-const { pathEscape } = require('guld-git-path')
+const { getName } = require('guld-user')
+const guldSDK = require('guld-sdk')
 var fs
-var user
 
 /* eslint-disable no-console */
 program
-  .name('guld-sdk')
-  .version(VERSION)
-  .description('Software developer kit for guld apps.')
-  .command('package [location]')
-  .alias('pkg')
-  .description('Initialize or patch a nodejs package.json file.')
-  .action(async (location, options) => {
-    if (location) process.chdir(location)
-    fs = fs || await getFS()
-    user = user || await getName()
-    var ghname = await getAlias(user, 'github')
-    var slug = pathEscape()
-    var dname = slug.replace('tech-js-node_modules-', '')
-    var remote = `git@github.com:${ghname}/${slug}.git`
-    var pkg = JSON.parse(await fs.readFile('package.json', 'utf-8'))
-    pkg.name = dname
-    pkg.readme = 'README.md'
-    pkg.license = pkg.license || 'MIT'
-    pkg.author = pkg.author || user
-    pkg.homepage = pkg.homepage || `https://github.com/${ghname}/${slug}#readme`
-    pkg.keywords = pkg.keywords || ['guld']
-    if (pkg.keywords.indexOf('guld') === -1) pkg.keywords.push('guld')
-    if (pkg.keywords) {
-      if (dname.match(/.*-cli$/)) {
-        pkg.preferGlobal = true
-        delete pkg.main
-        delete pkg.browser
-        if (pkg.keywords.indexOf('cli') === -1) pkg.keywords.push('cli')
-        fs.stat('./cli.js').then(stats => {
-          pkg.bin = {}
-          pkg.bin[dname.replace('-cli', '')] = './cli.js'
-        }).catch()
-      }
+  .name(thispkg.name.replace('-cli', ''))
+  .version(thispkg.version)
+  .description(thispkg.description)
+  .command('init [package-name]')
+  .description('Create or update a JS package, including package.json, travis, webpack, and more config files.')
+  .action(async (pname, options) => {
+    if (pname) process.chdir(guldSDK.getPath(pname))
+    else pname = process.cwd().replace(guldSDK.getPath(''), '').replace('/', '')
+    if (pname === '') {
+      console.log(`Invalid package-name ${pname}`)
+      process.exit(1)
     }
-    pkg.repository = pkg.repository || remote
-    await fs.writeFile('package.json', JSON.stringify(pkg, null, 2))
+    fs = fs || await getFS()
+    var guser = await getName()
+    await guldSDK.init(guser, pname)
+    console.log(`Initialized ${pname}`)
   })
-/*
+
 program
-  .command('version [type]')
-  .alias('ver')
-  .description('Increment version and publish a js package to npmjs.com.')
-  .action(async (type = 'patch', options) => {
-    fs = fs || await getFS()
-    user = user || await getName()
-    var ghname = await getAlias(user, 'github')
-    var slug = pathEscape()
-    var dname = slug.replace('tech-js-node_modules-', '')
-    var remote = `git@github.com:${ghname}/${slug}.git`
-    var pkg = JSON.parse(await fs.readFile('package.json', 'utf-8'))
-    pkg.name = dname
-    pkg.readme = 'README.md'
-    pkg.license = pkg.license || 'MIT'
-    pkg.author = pkg.author || user
-    pkg.homepage = pkg.homepage || `https://github.com/${ghname}/${slug}#readme`
-    pkg.keywords = pkg.keywords || ['guld']
-    if (pkg.keywords.indexOf('guld') === -1) pkg.keywords.push('guld')
-    if (pkg.keywords)
-    if (dname.match(/.*-cli$/)) {
-      pkg.preferGlobal = true
-      delete pkg.main
-      delete pkg.browser
-      if (pkg.keywords.indexOf('cli') === -1) pkg.keywords.push('cli')
-      var stats = fs.stat('./cli.js').then(stats => {
-        pkg.bin = {}
-        pkg.bin[dname.replace('-cli', '')] = './cli.js'
-      }).catch()
+  .command('readme [package-name]')
+  .description("Guld SDK readme generator. Uses package.json, .travis.yml, and pre-existing README.md files to generate guld-style README.md files like this project's")
+  .action(async (pname, options) => {
+    if (pname) process.chdir(guldSDK.getPath(pname))
+    else pname = process.cwd().replace(guldSDK.getPath(''), '').replace('/', '')
+    if (pname === '') {
+      console.log(`Invalid package-name ${pname}`)
+      process.exit(1)
     }
-    pkg.repository = pkg.repository || remote
-    await fs.writeFile('package.json', JSON.stringify(pkg, null, 2))
+    fs = fs || await getFS()
+    var pkg = await guldSDK.readThenClose('package.json', 'json')
+    await fs.writeFile('README.md', await guldSDK.genReadme(pkg))
+    console.log(`Created README.md for ${pname}`)
   })
-*/
 
 /* eslint-enable no-console */
 
-program.parse(process.argv)
+if (process.argv.length === 2) {
+  program.help()
+} else if (process.argv.length > 2) {
+  program.parse(process.argv)
+}
+module.exports = program
